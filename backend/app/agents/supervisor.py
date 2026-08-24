@@ -75,29 +75,40 @@ class AIAgentSupervisor:
         }
 
     async def _query_ollama(self, prompt: str, system_prompt: Optional[str] = None, max_tokens: int = 450, temperature: float = 0.2) -> Optional[str]:
-        """Queries local Ollama instance with optional system prompt."""
-        candidate_urls = list(dict.fromkeys(["http://127.0.0.1:11434", self.ollama_url, "http://localhost:11434"]))
-        client_timeout = httpx.Timeout(90.0, connect=3.0)
+        """Queries local Ollama instance using LangChain community integration with connection fallback."""
+        # pyrefly: ignore [missing-import]
+        from langchain_community.llms import Ollama
+        import httpx
+        candidate_urls = list(dict.fromkeys([self.ollama_url, "http://127.0.0.1:11434", "http://localhost:11434"]))
         for url in candidate_urls:
             try:
-                payload: Dict[str, Any] = {
-                    "model": self.model,
-                    "prompt": prompt,
-                    "stream": False,
-                    "options": {
-                        "temperature": temperature,
-                        "num_predict": max_tokens
-                    }
-                }
-                if system_prompt:
-                    payload["system"] = system_prompt
+                # Fast pre-check to avoid long LangChain connect timeout hangs
+                try:
+                    async with httpx.AsyncClient(timeout=1.5) as client:
+                        ping_res = await client.get(f"{url}/api/tags")
+                        if ping_res.status_code != 200:
+                            continue
+                except Exception:
+                    continue
 
-                async with httpx.AsyncClient(timeout=client_timeout) as client:
-                    res = await client.post(f"{url}/api/generate", json=payload)
-                    if res.status_code == 200:
-                        self.ollama_url = url
-                        resp_text = res.json().get("response", "")
-                        return resp_text.strip() if resp_text else None
+                # Initialize LangChain LLM wrapper
+                llm = Ollama(
+                    base_url=url,
+                    model=self.model,
+                    temperature=temperature,
+                    num_predict=max_tokens,
+                    timeout=90.0
+                )
+                
+                # Combine prompts for standard LLM completion
+                full_prompt = prompt
+                if system_prompt:
+                    full_prompt = f"System: {system_prompt}\n\nUser: {prompt}"
+
+                resp_text = await llm.ainvoke(full_prompt)
+                if resp_text:
+                    self.ollama_url = url
+                    return resp_text.strip()
             except Exception:
                 continue
         return None
