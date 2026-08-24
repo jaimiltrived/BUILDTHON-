@@ -138,7 +138,7 @@ function AppInner({
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F17] text-[#E9EDF4] font-sans selection:bg-[#E8A33D]/20 selection:text-[#E8A33D]">
+    <div className="min-h-screen bg-[#0B0F17] text-[#E9EDF4] font-sans selection:bg-[#E8A33D]/20 selection:text-[#E8A33D] tech-grid">
       <CommandPalette onNavigate={(tab) => setActiveTab(tab)} />
       
       {/* Fixed 56px Topbar */}
@@ -148,7 +148,7 @@ function AppInner({
       <Sidebar activeTab={activeTab} onTabSelect={setActiveTab} />
 
       {/* Main Content Area (Independent scroll, padding to clear fixed bars) */}
-      <main className="pl-[220px] pt-14 min-h-screen bg-[#0B0F17]">
+      <main className="pl-[220px] pt-14 min-h-screen bg-transparent">
         <div className="max-w-7xl mx-auto px-6 py-8">
           {renderContent()}
         </div>

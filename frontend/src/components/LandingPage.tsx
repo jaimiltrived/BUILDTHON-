@@ -176,7 +176,7 @@ export default function LandingPage({ onEnter }: LandingPageProps) {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0F17] text-[#E9EDF4] selection:bg-[#E8A33D]/20 selection:text-[#E8A33D] font-sans antialiased overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#0B0F17] text-[#E9EDF4] selection:bg-[#E8A33D]/20 selection:text-[#E8A33D] font-sans antialiased overflow-x-hidden relative tech-grid">
       
       {/* Background Radial Glow */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[#E8A33D]/5 rounded-full blur-[120px] pointer-events-none" />
