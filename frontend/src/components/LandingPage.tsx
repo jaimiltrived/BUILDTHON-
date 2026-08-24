@@ -654,20 +654,73 @@ export default function LandingPage({ onEnter }: LandingPageProps) {
         )}
       </main>
 
-      {/* Footer CTA */}
-      <footer className="border-t border-[#232E42] bg-[#121826]/40 py-12">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="space-y-1 text-center md:text-left">
-            <h3 className="text-sm font-display font-bold text-[#E9EDF4] uppercase tracking-wider">Ready to deploy?</h3>
-            <p className="text-xs text-[#8C99AF]">Initiate simulations and autonomous financial research locally.</p>
-          </div>
+      {/* 5. Comprehensive Corporate Footer */}
+      <footer className="border-t border-[#232E42] bg-[#121826]/60 backdrop-blur-sm py-16 mt-20 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-10">
           
-          <button
-            onClick={onEnter}
-            className="px-6 py-2.5 bg-[#E8A33D] hover:bg-[#E8A33D]/90 text-[#0B0F17] text-xs font-display font-bold rounded-lg transition-all cursor-pointer uppercase tracking-wider flex items-center gap-2"
-          >
-            Launch Twin Platform <ArrowRight size={13} />
-          </button>
+          {/* Column 1: Brand & Desc */}
+          <div className="md:col-span-4 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-[#182234] border border-[#232E42] flex items-center justify-center text-sm shadow-[0_0_12px_rgba(232,163,61,0.2)] select-none">
+                ⚡
+              </div>
+              <div>
+                <h4 className="text-xs font-display font-black tracking-wider text-[#E9EDF4] uppercase leading-none">
+                  FINANCIAL TIME MACHINE
+                </h4>
+                <span className="text-[8px] text-[#8C99AF] uppercase tracking-widest font-mono">Sovereign Decision Twin</span>
+              </div>
+            </div>
+            <p className="text-[11px] text-[#8C99AF] leading-relaxed max-w-sm">
+              The premier causal simulation environment for mid-market and enterprise e-commerce operators. Running secure, zero-leakage multi-agent predictions entirely on local GPU servers.
+            </p>
+            <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#0B0F17] border border-[#232E42] text-[9px] font-mono w-fit">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#3ADDA0] animate-pulse" />
+              <span className="text-[#8C99AF]">LOCAL HOST INFRASTRUCTURE STATUS: ACTIVE</span>
+            </div>
+          </div>
+
+          {/* Column 2: Platform Anchors */}
+          <div className="md:col-span-2 space-y-3">
+            <h5 className="text-[10px] font-mono font-bold text-[#E9EDF4] uppercase tracking-widest">Platform Tabs</h5>
+            <ul className="space-y-2 text-[11px] font-mono text-[#8C99AF]">
+              <li><button onClick={() => setActivePage('home')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Home Sandbox</button></li>
+              <li><button onClick={() => setActivePage('features')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Platform Features</button></li>
+              <li><button onClick={() => setActivePage('roles')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Operational Roles</button></li>
+              <li><button onClick={() => setActivePage('security')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Sovereign Security</button></li>
+            </ul>
+          </div>
+
+          {/* Column 3: Seeded Personas */}
+          <div className="md:col-span-3 space-y-3">
+            <h5 className="text-[10px] font-mono font-bold text-[#E9EDF4] uppercase tracking-widest">1-Click Launchers</h5>
+            <ul className="space-y-2 text-[11px] font-mono text-[#8C99AF]">
+              <li><button onClick={() => handleQuickLogin('cfo@nova.com', 'CFO')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Launch Chief Financial Officer</button></li>
+              <li><button onClick={() => handleQuickLogin('exec@nova.com', 'Executive')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Launch Board Executive</button></li>
+              <li><button onClick={() => handleQuickLogin('auditor@nova.com', 'Auditor')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Launch Independent Auditor</button></li>
+              <li><button onClick={() => handleQuickLogin('analyst@nova.com', 'BA')} className="hover:text-[#E8A33D] transition-colors cursor-pointer text-left">Launch Business Analyst</button></li>
+            </ul>
+          </div>
+
+          {/* Column 4: Compliance & Sec */}
+          <div className="md:col-span-3 space-y-3">
+            <h5 className="text-[10px] font-mono font-bold text-[#E9EDF4] uppercase tracking-widest">Security Specs</h5>
+            <div className="space-y-2.5 text-[11px] text-[#8C99AF] font-mono leading-relaxed">
+              <p>🔒 **AES-256 local database fallback encryption** active on database volumes.</p>
+              <p>🛡️ **SOC-2 Type II** compliant block structure on sequence ledgers.</p>
+              <p>🤖 Ingested vectors remain indexed in-memory and mapped via SQL columns locally.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 border-t border-[#232E42] mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] font-mono text-[#5B6A82]">
+          <p>© 2026 Financial Time Machine Pvt Ltd. Local-first sovereign model architecture. All rights reserved.</p>
+          <div className="flex gap-4">
+            <a href="#privacy" className="hover:text-[#8C99AF]">Local Privacy Policy</a>
+            <a href="#terms" className="hover:text-[#8C99AF]">Local Terms of Service</a>
+            <a href="#cookies" className="hover:text-[#8C99AF]">Data Node Cookies</a>
+          </div>
         </div>
       </footer>
 
