@@ -1,0 +1,21 @@
+customer_id,customer_name,email,segment,date,purchase_frequency,avg_order_value,recency_days,complaints_count,refunds_count,discount_dependency,revenue,cogs,operating_expenses,net_profit,churned
+CUST-1001,Apex Global Tech,finance@apextech.com,High Value,2026-01-15,12.5,4500.0,4,0,0,0.05,56250.0,18500.0,12000.0,25750.0,0
+CUST-1002,Zenith Logistics,ops@zenithlog.com,Price Sensitive,2026-01-18,3.2,1200.0,45,2,1,0.45,3840.0,2100.0,1100.0,640.0,1
+CUST-1003,Starlight Retail,accounts@starlight.in,Standard,2026-01-20,6.0,2400.0,14,1,0,0.15,14400.0,6200.0,3800.0,4400.0,0
+CUST-1004,Quantum Systems,billing@quantumsys.com,High Value,2026-01-22,15.0,6200.0,2,0,0,0.02,93000.0,31000.0,18000.0,44000.0,0
+CUST-1005,BlueWave Digital,contact@bluewave.io,Price Sensitive,2026-01-25,2.1,850.0,62,3,2,0.60,1785.0,1050.0,600.0,135.0,1
+CUST-1006,Summit Energy,energy@summitcorp.com,High Value,2026-01-28,9.4,5100.0,8,0,0,0.08,47940.0,16500.0,11200.0,20240.0,0
+CUST-1007,Horizon FinServ,admin@horizonfin.org,Standard,2026-02-01,7.2,3100.0,18,0,0,0.12,22320.0,9100.0,5500.0,7720.0,0
+CUST-1008,Nexus Health,procure@nexushealth.in,High Value,2026-02-04,11.0,4800.0,6,1,0,0.04,52800.0,19200.0,13000.0,20600.0,0
+CUST-1009,AeroDynamic Labs,info@aerolab.com,Price Sensitive,2026-02-06,1.8,950.0,55,2,1,0.50,1710.0,980.0,580.0,150.0,1
+CUST-1010,Vanguard Bio,supply@vanguardbio.com,High Value,2026-02-09,14.2,5900.0,3,0,0,0.03,83780.0,28500.0,17500.0,37780.0,0
+CUST-1011,Metro Infrastructure,accounts@metroinfra.in,Standard,2026-02-12,5.5,2750.0,21,1,1,0.20,15125.0,6800.0,4200.0,4125.0,0
+CUST-1012,Prism Media,billing@prismmedia.co,Price Sensitive,2026-02-14,2.5,1100.0,48,2,1,0.40,2750.0,1600.0,900.0,250.0,1
+CUST-1013,Titan Manufacturing,purchase@titanmfg.com,High Value,2026-02-16,16.8,7500.0,1,0,0,0.01,126000.0,44000.0,26000.0,56000.0,0
+CUST-1014,Solaris Cloud,cloud@solarisnet.io,Standard,2026-02-18,8.0,3300.0,12,0,0,0.10,26400.0,10500.0,6800.0,9100.0,0
+CUST-1015,Falcon Express,dispatch@falconexp.com,Price Sensitive,2026-02-20,3.0,1350.0,38,1,1,0.35,4050.0,2300.0,1250.0,500.0,0
+CUST-1016,Crestline Analytics,data@crestline.ai,High Value,2026-02-23,10.5,4900.0,5,0,0,0.06,51450.0,18000.0,12500.0,20950.0,0
+CUST-1017,Pinnacle Goods,orders@pinnaclegoods.in,Price Sensitive,2026-02-25,1.5,780.0,75,4,2,0.70,1170.0,720.0,410.0,40.0,1
+CUST-1018,Omega Logistics,shipping@omegalog.com,Standard,2026-02-27,6.8,2900.0,15,1,0,0.18,19720.0,8400.0,5100.0,6220.0,0
+CUST-1019,Silverline Software,dev@silverlinesoft.com,High Value,2026-03-01,13.0,5400.0,4,0,0,0.05,70200.0,24500.0,15200.0,30500.0,0
+CUST-1020,Terra Agro Foods,trade@terraagro.in,Price Sensitive,2026-03-03,2.0,1050.0,52,2,1,0.48,2100.0,1250.0,700.0,150.0,1

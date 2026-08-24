@@ -1,0 +1,25 @@
+# Environments
+venv/
+.env
+.env.local
+.env.*.local
+
+# Python cache & artifacts
+__pycache__/
+*.pyc
+.pytest_cache/
+financial_time_machine.db
+*.db
+
+# Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# IDEs & System
+.vscode/
+.idea/
+.gemini/
+.DS_Store
+Thumbs.db

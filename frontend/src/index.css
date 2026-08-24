@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg: #0B0F17;
+    --surface: #121826;
+    --surface-2: #182234;
+    --border: #232E42;
+    --text-1: #E9EDF4;
+    --text-2: #8C99AF;
+    --text-3: #5B6A82;
+    --amber: #E8A33D;
+    --teal: #3ADDA0;
+    --red: #F1584F;
+    --blue: #5B8DEF;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-1);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+  }
+
+  .font-mono, .font-metric, code, kbd {
+    font-family: 'JetBrains Mono', monospace !important;
+  }
+}
+
+/* Card & Surface Tokens */
+.ftm-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.ftm-card-nested {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* Winning Plan in War Room */
+.plan-card-winner {
+  background-color: var(--surface);
+  border: 1px solid var(--amber) !important;
+  box-shadow: 0 0 25px rgba(232, 163, 61, 0.15), inset 0 0 15px rgba(232, 163, 61, 0.05);
+  transform: scale(1.02);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.plan-card-loser {
+  opacity: 0.75;
+  filter: grayscale(20%);
+  transition: all 0.3s ease;
+}
+
+.plan-card-loser:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+}
+
+/* AI Insight Card Signature */
+.ai-insight-card {
+  background: linear-gradient(180deg, rgba(232, 163, 61, 0.04) 0%, rgba(18, 24, 38, 0.95) 100%);
+  border: 1px solid var(--amber);
+  border-radius: 12px;
+}
+
+/* Timeline Spine Load Animation */
+@keyframes drawLine {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pulsePresent {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(232, 163, 61, 0.7);
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 8px rgba(232, 163, 61, 0);
+  }
+}
+
+.timeline-spine-line {
+  transform-origin: left;
+  animation: drawLine 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.timeline-present-node {
+  animation: pulsePresent 2.5s infinite ease-in-out;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-3);
+}
+
+/* Range input slider styling */
+input[type="range"] {
+  accent-color: var(--amber);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .timeline-present-node {
+    animation: none !important;
+  }
+}
