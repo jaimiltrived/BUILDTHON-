@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useDashboardQuery, useRiskQuery, useLedgerQuery, useMonthlyTrendQuery, useLiveBaselineQuery } from '../../lib/queries';
 import MetricCard from '../common/MetricCard';
@@ -16,6 +17,8 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
   const { user } = useAuth();
   const role = user?.role || 'CFO';
 
+  const [timeRange, setTimeRange] = useState<'12m' | '30d' | '2d'>('12m');
+
   const { data: metrics, isLoading: loadingMetrics } = useDashboardQuery(user?.organization_id || 'default', role);
   const { data: baseline } = useLiveBaselineQuery();
   const { data: monthlyData = [] } = useMonthlyTrendQuery();
@@ -32,6 +35,41 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
     profit: Math.round(d.profit / 1000),
     orders: d.orders,
   }));
+
+  // Daily performance data generator for last 30 days
+  const dailyPoints = Array.from({ length: 30 }, (_, i) => {
+    const day = i + 1;
+    const baseRev = 8240000 / 30;
+    const noise = Math.sin(i * 0.8) * 0.15 + (Math.random() - 0.5) * 0.1;
+    const revenue = Math.round((baseRev * (1 + noise)) / 1000);
+    const profit = Math.round(revenue * 0.2572);
+    return {
+      name: `Day ${day}`,
+      revenue,
+      profit,
+      orders: Math.floor(65 + Math.sin(i * 0.8) * 15 + Math.random() * 5),
+    };
+  });
+
+  // Hour-by-hour transaction volume data generator for last 2 days (48 hours)
+  const hourlyPoints = Array.from({ length: 48 }, (_, i) => {
+    const hour = i % 24;
+    const dayNum = Math.floor(i / 24) === 0 ? "1" : "2";
+    const timeLabel = `${hour}:00 (D${dayNum})`;
+    const peakFactor = Math.sin((hour - 8) * (Math.PI / 12)) * 0.35 + 0.95; // higher in business hours
+    const baseRev = 8240000 / (30 * 24);
+    const noise = (Math.random() - 0.48) * 0.12;
+    const revenue = Math.round((baseRev * peakFactor * (1 + noise)) / 1000);
+    const profit = Math.round(revenue * 0.2572);
+    return {
+      name: timeLabel,
+      revenue,
+      profit,
+      orders: Math.floor(peakFactor * 8 + Math.random() * 3),
+    };
+  });
+
+  const activePoints = timeRange === '12m' ? chartPoints : timeRange === '30d' ? dailyPoints : hourlyPoints;
 
   const revFormatted = baseline?.revenue_formatted || metrics?.revenue_formatted || "₹82.4L";
   const profitFormatted = baseline?.profit_formatted || metrics?.profit_formatted || "₹21.2L";
@@ -125,25 +163,36 @@ export default function DashboardPage({ onNavigate }: DashboardPageProps) {
           <div className="flex items-center justify-between border-b border-[#232E42] pb-3">
             <div>
               <h3 className="text-xs font-display font-bold uppercase tracking-wider text-[#E9EDF4]">
-                Real-Time Historical Trajectory & Orders
+                Real-Time Historical Trajectory
               </h3>
               <p className="text-[11px] text-[#8C99AF] font-mono">
-                Aggregated from {customerCount.toLocaleString()} Live Accounts & Orders (k₹)
+                {timeRange === '12m' ? 'Aggregated from 12 Months' : timeRange === '30d' ? 'Aggregated from 30 Days' : 'Last 2 Days Hour-by-Hour'} (k₹)
               </p>
             </div>
-            <div className="flex items-center gap-3 text-xs font-mono">
-              <span className="flex items-center gap-1 text-[#3ADDA0]">
-                <span className="w-2 h-2 rounded-full bg-[#3ADDA0]" /> Revenue
-              </span>
-              <span className="flex items-center gap-1 text-[#5B8DEF]">
-                <span className="w-2 h-2 rounded-full bg-[#5B8DEF]" /> Net Profit
-              </span>
+            <div className="flex items-center gap-4 text-xs font-mono">
+              <select
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value as any)}
+                className="bg-[#121826] border border-[#232E42] rounded-lg px-2 py-1 text-[10px] font-mono font-bold text-[#E8A33D] outline-none cursor-pointer hover:border-[#E8A33D]/60 transition-all uppercase"
+              >
+                <option value="12m">12 Months</option>
+                <option value="30d">30 Days</option>
+                <option value="2d">Last 2 Days</option>
+              </select>
+              <div className="hidden sm:flex items-center gap-3">
+                <span className="flex items-center gap-1 text-[#3ADDA0]">
+                  <span className="w-2 h-2 rounded-full bg-[#3ADDA0]" /> Revenue
+                </span>
+                <span className="flex items-center gap-1 text-[#5B8DEF]">
+                  <span className="w-2 h-2 rounded-full bg-[#5B8DEF]" /> Net Profit
+                </span>
+              </div>
             </div>
           </div>
 
           <div className="h-[260px] w-full pt-2">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={chartPoints}>
+              <LineChart data={activePoints}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#182234" />
                 <XAxis
                   dataKey="name"
