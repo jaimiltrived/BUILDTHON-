@@ -16,8 +16,7 @@ import {
   Building2, 
   CreditCard, 
   Cpu,
-  X,
-  Bot
+  X
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -49,7 +48,7 @@ export default function ReconciliationPage() {
   // Queries & Mutations
   const { data: rawBatch } = useReconciliationBatchQuery();
   const { data: queryRunResult } = useReconciliationRunQuery();
-  const { data: autoAiResult, isFetching: isAiLoading } = useReconciliationAIQuery();
+  const { data: autoAiResult } = useReconciliationAIQuery();
   const { mutate: runRecon, isPending: isRunningRecon, data: mutationRunResult } = useRunReconciliationMutation();
   const { mutate: analyzeRecon, isPending: isAnalyzingAI } = useAnalyzeReconciliationMutation();
   const { mutate: resolveException, isPending: isResolving } = useResolveExceptionMutation();

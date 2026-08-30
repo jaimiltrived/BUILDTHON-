@@ -12,8 +12,11 @@ from typing import Dict, Any, List, Optional
 
 # LangChain Imports with Graceful Fallback
 try:
+    # pyrefly: ignore [missing-import]
     from langchain.text_splitter import RecursiveCharacterTextSplitter
+    # pyrefly: ignore [missing-import]
     from langchain.prompts import PromptTemplate
+    # pyrefly: ignore [missing-import]
     from langchain_community.llms import Ollama
     HAS_LANGCHAIN = True
 except ImportError:
