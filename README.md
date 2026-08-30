@@ -2,18 +2,62 @@
 > **Autonomous Causal Decision Twin, Multi-Source Reconciliation & Predictive ML Platform for Enterprise Finance**
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/jaimiltrived/BUILDTHON-)
-[![Python](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-69.9%25-3178C6.svg)](https://github.com/jaimiltrived/BUILDTHON-/search?l=typescript)
+[![Python](https://img.shields.io/badge/Python-29.0%25-3776AB.svg)](https://github.com/jaimiltrived/BUILDTHON-/search?l=python)
+[![LangChain](https://img.shields.io/badge/LangChain-Framework-121011.svg)](https://www.langchain.com/)
+[![RAG](https://img.shields.io/badge/RAG-Sovereign_Document_Memory-blueviolet.svg)](https://github.com/jaimiltrived/BUILDTHON-)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110.0-009688.svg)](https://fastapi.tiangolo.com/)
 [![React](https://img.shields.io/badge/React-18.2-61DAFB.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.2-3178C6.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.0-646CFF.svg)](https://vitejs.dev/)
 [![Ollama](https://img.shields.io/badge/AI_Supervisor-LLaMA_3-FF6F00.svg)](https://ollama.com/)
 [![Security](https://img.shields.io/badge/OWASP-Security_Headers-success.svg)](https://owasp.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**Financial Time Machine (FTM)** is a secure, local-first enterprise decision simulation, multi-source financial reconciliation, and predictive intelligence platform engineered for Chief Financial Officers (CFOs), financial controllers, risk officers, and compliance auditors. FTM enables organizations to simulate strategic pricing changes, evaluate cross-functional business impacts, execute high-throughput multi-source financial reconciliations, run machine learning predictive models, and log every executive decision to an immutable cryptographic SHA-256 audit ledger—all completely local and sovereign.
+**Financial Time Machine (FTM)** is a secure, local-first enterprise decision simulation, multi-source financial reconciliation, and predictive intelligence platform engineered for Chief Financial Officers (CFOs), financial controllers, risk officers, and compliance auditors. Powered by **LangChain**, local **LLaMA 3 AI Supervisor**, and **Sovereign Retrieval-Augmented Generation (RAG)**, FTM enables organizations to simulate strategic pricing changes, evaluate cross-functional business impacts, execute high-throughput multi-source financial reconciliations, run machine learning predictive models, and log every executive decision to an immutable cryptographic SHA-256 audit ledger—all completely local and sovereign.
 
 Pushed live on remote repository: `https://github.com/jaimiltrived/BUILDTHON-.git`
+
+---
+
+## 📊 Codebase Language Breakdown
+
+```
+TypeScript ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ 69.9%
+Python     ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                    29.0%
+Other      ▓                                   1.1%
+```
+
+| Language | Percentage | Primary Responsibilities & Stack Modules |
+| :--- | :--- | :--- |
+| **TypeScript** | **69.9%** | React 18 SPA UI, Recharts Financial Visualizations, TanStack React Query Hooks, AuthContext, Executive Dashboards, Reconciliation Workbench, War Room UI |
+| **Python** | **29.0%** | FastAPI REST Gateway, LangChain Framework Wrappers, 3-Stage Reconciliation Engine, Enterprise Financial ML Models (Scikit-Learn), PyPDF RAG Parser, SQLAlchemy |
+| **Other** | **1.1%** | HTML5 Template Structures, Vanilla CSS Tokens & Glassmorphism Rules, Docker Compose YAML, Shell Automation Scripts |
+
+---
+
+## 🦜🔗 LangChain & Sovereign RAG Architecture
+
+```mermaid
+graph TD
+    A[Enterprise PDF / CSV / TXT / JSON Docs] --> B[PyPDF & Text Ingestion Engine]
+    B --> C[LangChain Recursive Character Chunking]
+    C --> D[In-Memory TF-IDF Vector & Keyword Index]
+    E[User Query / Financial Decision Prompt] --> F[LangChain Context Retriever]
+    D --> F
+    F --> G[LangChain Ollama LLaMA 3 Prompt Template]
+    G --> H[Local LLaMA 3 Neural Inference Engine]
+    H --> I[Grounded AI Audit Verdict & Multi-Agent Debater Stream]
+```
+
+### 1. 🦜🔗 LangChain Framework Community Integration
+- Uses `langchain` and `langchain-community` wrappers to orchestrate local LLM prompts, multi-agent debater chains, and structured schema parsers.
+- **LangChain Ollama Interface**: Bypasses cloud APIs by connecting directly to the local Ollama daemon (`http://127.0.0.1:11434`), delivering sub-second local LLM responses without external data egress.
+- **Structured Output Chains**: Formats multi-agent consensus outputs into strict JSON schemas for automated executive war room rating ingestion.
+
+### 2. 🧠 Sovereign Retrieval-Augmented Generation (RAG)
+- **Local Document Scanning**: Ingest corporate PDF financial statements, auditor reports, CSV transaction feeds, and TXT policy memos via `pypdf` and custom chunking pipelines.
+- **In-Memory Relevance Indexing**: Paragraphs are indexed locally using a high-performance TF-IDF vector score matching algorithm.
+- **Zero-Telemetry Grounding**: When a CFO asks a financial query, the system retrieves the top-ranked internal document passages and injects them directly into the LangChain prompt context. Sensitive company financial data never leaves local RAM.
 
 ---
 
@@ -23,7 +67,7 @@ Pushed live on remote repository: `https://github.com/jaimiltrived/BUILDTHON-.gi
 graph TD
     A[CFO / Executive Strategy Input] --> B[Multi-Scenario Causal Sandbox]
     B --> C[Enterprise Financial ML Engine]
-    C --> D[Local LLaMA 3 Multi-Agent Debater Framework]
+    C --> D[LangChain & Local LLaMA 3 Multi-Agent Debater]
     E[Sovereign RAG Document Ingestion] --> D
     D --> F[Executive War Room & Board Approval]
     F --> G[Cryptographic SHA-256 Audit Ledger]
@@ -58,7 +102,7 @@ graph TD
 - **Ridge Auto-Regressive Cash Flow Forecaster**: Delivers 90-day forward liquidity predictions with 95% confidence intervals.
 
 ### 4. 🤖 Local-First Multi-Agent Debater & Sovereign RAG
-- **Consensus Multi-Agent Framework**: **Financial Observer**, **Risk Guardian**, and **Competitor Benchmarker** debate proposals under the guidance of a local **LLaMA 3 Supervisor Agent**.
+- **Consensus Multi-Agent Framework**: **Financial Observer**, **Risk Guardian**, and **Competitor Benchmarker** debate proposals under the guidance of a local **LLaMA 3 Supervisor Agent** managed by LangChain chains.
 - **In-Memory Sovereign RAG**: Ingest PDF reports, CSV logs, TXT documents, and JSON streams into an in-memory TF-IDF context retriever. Zero telemetry—sensitive financial data never leaves your infrastructure.
 
 ### 5. 🛡️ Cryptographic SHA-256 Decision Ledger
@@ -92,12 +136,12 @@ FTM enforces strict role permissions across enterprise personas:
 ├── backend/                              # FastAPI Application Core
 │   ├── app/
 │   │   ├── agents/                      # Multi-Agent prompt templates & Ollama controllers
-│   │   │   └── supervisor.py            # LLaMA 3 Supervisor & Debater Loop Controller
+│   │   │   └── supervisor.py            # LangChain & LLaMA 3 Supervisor Controller
 │   │   ├── analytics/                   # Risk scoring & 3-Stage reconciliation engine
 │   │   │   └── reconciliation_engine.py # Multi-source matching & cash forecast logic
 │   │   ├── api/                         # REST API Routers & Middleware
 │   │   │   ├── routers/                 # 14 FastAPI Router Modules
-│   │   │   │   ├── ai.py                # AI Copilot & agent debate endpoints
+│   │   │   │   ├── ai.py                # LangChain Copilot & agent debate endpoints
 │   │   │   │   ├── audit.py             # Activity log audit stream endpoints
 │   │   │   │   ├── auth.py              # JWT authentication & profile endpoints
 │   │   │   │   ├── documents.py         # File ingestion & RAG context endpoints
@@ -132,7 +176,7 @@ FTM enforces strict role permissions across enterprise personas:
 │   ├── scripts/                         # Database seeding & setup scripts
 │   │   └── seed_demo_users.py           # Demo accounts & initial database seeder
 │   └── main.py                          # Application entrypoint & FastAPI initialization
-├── frontend/                             # Vite + React 18 + TypeScript SPA
+├── frontend/                             # Vite + React 18 + TypeScript SPA (69.9%)
 │   ├── src/
 │   │   ├── components/                  # UI Component Library
 │   │   │   ├── common/                  # AuditTrail, SkeletonLoader, Badges
@@ -175,7 +219,7 @@ The backend exposes 14 fully documented OpenAPI Swagger endpoint groups at `http
 | **war-room** | `POST` | `/api/war-room/sign-off` | Cryptographically sign off and finalize board decision |
 | **ledger** | `GET` | `/api/ledger/blocks` | Retrieve SHA-256 tamper-evident cryptographic audit blocks |
 | **ledger** | `GET` | `/api/ledger/verify` | Run cryptographic chain verification audit |
-| **ai** | `POST` | `/api/ai/chat` | Send prompt to local LLaMA 3 supervisor agent |
+| **ai** | `POST` | `/api/ai/chat` | Send prompt to local LLaMA 3 supervisor agent via LangChain |
 | **memory** | `POST` | `/api/memory/upload` | Upload PDF, CSV, TXT, or JSON file to local RAG index |
 
 ---
