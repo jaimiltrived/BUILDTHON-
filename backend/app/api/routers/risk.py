@@ -1,13 +1,21 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from app.api import deps
+from app.models.user import User
 
 router = APIRouter()
 
 
 @router.get("/center")
-def get_risk_center():
+def get_risk_center(
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_active_user),
+):
     """
     Returns structured risk breakdown for the Risk Center dashboard.
     Aggregates churn, cash flow, pricing sensitivity, and inventory risk.
+    Requires authenticated user.
     """
     return {
         "overall_score": 36,
@@ -16,7 +24,7 @@ def get_risk_center():
             "churn_weight": 40,
             "cashflow_weight": 30,
             "pricing_weight": 20,
-            "inventory_weight": 10
+            "inventory_weight": 10,
         },
         "risks": [
             {
@@ -32,7 +40,7 @@ def get_risk_center():
                 "root_cause": "Price sensitivity in high-value customer cohort. Competitive alternatives gaining share in metro markets.",
                 "affected_segment": "High-LTV Metro Accounts (est. 3,400 customers)",
                 "mitigation": "Introduce loyalty pricing tier for accounts >24 months. Consider retention outreach for top 500 accounts by CLV.",
-                "confidence": 84
+                "confidence": 84,
             },
             {
                 "id": "cashflow",
@@ -47,7 +55,7 @@ def get_risk_center():
                 "root_cause": "Extended payment cycles from B2B clients. Rising last-mile delivery cost (+14% YoY).",
                 "affected_segment": "B2B Enterprise Accounts (est. 12% of revenue)",
                 "mitigation": "Accelerate invoice factoring program. Renegotiate delivery SLAs with logistics partners.",
-                "confidence": 71
+                "confidence": 71,
             },
             {
                 "id": "pricing",
@@ -62,7 +70,7 @@ def get_risk_center():
                 "root_cause": "Market price comparison tools increasing consumer price awareness. Competitor pricing 3-7% below on premium SKUs.",
                 "affected_segment": "Premium Catalog (est. 31% of GMV)",
                 "mitigation": "Segment pricing strategy: maintain standard catalog pricing, introduce value bundles for premium SKUs.",
-                "confidence": 78
+                "confidence": 78,
             },
             {
                 "id": "inventory",
@@ -77,9 +85,9 @@ def get_risk_center():
                 "root_cause": "Minor overstock in Q3 seasonal categories. Demand spike for electronics sub-category underestimated.",
                 "affected_segment": "Seasonal & Electronics Categories",
                 "mitigation": "Increase safety stock buffer for electronics by 15%. Reduce seasonal order lead times.",
-                "confidence": 91
-            }
+                "confidence": 91,
+            },
         ],
         "last_calculated": "2026-08-23T13:00:00+05:30",
-        "data_coverage_months": 24
+        "data_coverage_months": 24,
     }

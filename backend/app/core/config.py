@@ -16,18 +16,23 @@ class Settings(BaseSettings):
     API_PORT: int = int(os.getenv("API_PORT", 5000))
     API_URL: str = os.getenv("API_URL", "http://localhost:5000")
     CORS_ORIGINS: str = os.getenv("CORS_ORIGINS", "http://localhost:5173")
-    
-    # DB Config (MySQL via PyMySQL)
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "mysql+pymysql://root:@127.0.0.1:3306/financial_time_machine")
-    
+
+    # DB Config (SQLite default, MySQL via DATABASE_URL env override)
+    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./financial_time_machine.db")
+
     # Redis
     REDIS_URL: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
-    
-    # Auth
+
+    # Auth — SECRET_KEY must be a long, random string in production
     SECRET_KEY: str = os.getenv("SECRET_KEY", "dev_secret_key_change_in_production")
     ALGORITHM: str = os.getenv("ALGORITHM", "HS256")
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
-    
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
+    REFRESH_TOKEN_EXPIRE_DAYS: int = int(os.getenv("REFRESH_TOKEN_EXPIRE_DAYS", 7))
+
+    # Login rate-limiting (in-memory sliding window)
+    RATE_LIMIT_LOGIN_MAX: int = int(os.getenv("RATE_LIMIT_LOGIN_MAX", 10))
+    RATE_LIMIT_LOGIN_WINDOW_SECONDS: int = int(os.getenv("RATE_LIMIT_LOGIN_WINDOW_SECONDS", 300))
+
     # Local AI
     OLLAMA_BASE_URL: str = os.getenv("OLLAMA_BASE_URL", "http://127.0.0.1:11434")
     PRIMARY_MODEL: str = os.getenv("PRIMARY_MODEL", "llama3")

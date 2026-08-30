@@ -7,8 +7,22 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from fastapi.testclient import TestClient
 from main import app
 from app.analytics.finance_engine import FinanceEngine
+from app.api import deps
+from app.models.user import User, RoleEnum
 
 def test_full_suite():
+    # Mock authenticated user dependency
+    mock_user = User(
+        id="test-user-id",
+        email="test_cfo@novacorp.com",
+        full_name="Test CFO",
+        role=RoleEnum.CFO,
+        is_active=True,
+        organization_id="NOVA COMMERCE"
+    )
+    app.dependency_overrides[deps.get_current_active_user] = lambda: mock_user
+    app.dependency_overrides[deps.get_current_user] = lambda: mock_user
+
     client = TestClient(app)
     print("=== FINANCIAL TIME MACHINE FULL AUDIT SUITE ===")
     
@@ -109,7 +123,45 @@ def test_full_suite():
     assert rec_record["accuracy"]["revenue_accuracy"] == expected_rev_acc
     print(f"[PASS] 11. Record Actual Outcome POST: Dynamic Revenue Accuracy = {rec_record['accuracy']['revenue_accuracy']}% (Calculated authentically)")
 
-    print("\n>>> ALL 11 AUDIT SUITE TESTS PASSED 100% CLEANLY! <<<")
+    # 12. Multi-Source Reconciliation Batch
+    res = client.get("/api/reconciliation/batch")
+    assert res.status_code == 200, f"Reconciliation batch failed: {res.status_code}"
+    recon_batch = res.json()
+    assert len(recon_batch["bank_feed"]) == 65
+    print(f"[PASS] 12. Reconciliation Batch GET: 65 multi-source records retrieved ({recon_batch['batch_id']})")
+
+    # 13. Multi-Source Reconciliation Pipeline Run
+    res = client.get("/api/reconciliation/run")
+    assert res.status_code == 200, f"Reconciliation run GET failed: {res.status_code}"
+    recon_run = res.json()
+    assert recon_run["scorecard"]["total_records_processed"] == 65
+    assert recon_run["scorecard"]["auto_matched_records"] >= 58
+    print(f"[PASS] 13. Reconciliation Pipeline GET Run: Match Rate = {recon_run['scorecard']['match_rate_percentage']}%, Latency = {recon_run['scorecard']['execution_latency_ms']}ms")
+
+    # 14. LLaMA 3 AI Discrepancy Neural Analysis
+    res = client.post("/api/reconciliation/analyze")
+    assert res.status_code == 200, f"Reconciliation analyze failed: {res.status_code}"
+    recon_ai = res.json()
+    assert "executive_verdict" in recon_ai
+    print(f"[PASS] 14. Reconciliation AI Discrepancy Analysis POST: {recon_ai['generation_mode']} verdict generated")
+
+    # 15. Resolve Exception (Human-in-the-Loop)
+    res = client.post("/api/reconciliation/resolve-exception", json={
+        "exception_id": "EXP-001",
+        "resolution_action": "TREASURY_OUTREACH",
+        "notes": "Verified entity LEI via Treasury"
+    })
+    assert res.status_code == 200, f"Resolve exception failed: {res.status_code}"
+    resolved_res = res.json()
+    assert resolved_res["status"] == "SUCCESS"
+    assert resolved_res["remaining_exceptions_count"] == len(recon_run["exceptions"]) - 1
+    print(f"[PASS] 15. Exception Resolution POST: Exception EXP-001 resolved. Remaining: {resolved_res['remaining_exceptions_count']}")
+
+    print("\n>>> ALL 15 AUDIT SUITE TESTS PASSED 100% CLEANLY! <<<")
+
+    # Clear dependency overrides
+    app.dependency_overrides.clear()
 
 if __name__ == "__main__":
     test_full_suite()
+
