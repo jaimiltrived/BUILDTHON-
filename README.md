@@ -21,19 +21,25 @@ Pushed live on remote repository: `https://github.com/jaimiltrived/BUILDTHON-.gi
 
 ---
 
-## 📊 Codebase Language Breakdown
+## 📊 Codebase Language & Technology Stack Breakdown
 
 ```
-TypeScript ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ 69.9%
-Python     ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                    29.0%
-Other      ▓                                   1.1%
+TypeScript (React 18 SPA, Recharts)     ████████████████████████████ 68.2%
+Python (FastAPI, LangChain, ML Engine)  ██████████████              28.5%
+SQL (Enterprise DDL Database Schemas)   ██                           1.4%
+Shell (Docker Deployment Scripts)       █                            0.8%
+YAML & Docker (CI/CD Pipeline & Compose) █                            0.6%
+HTML5 & CSS3 (Design System & Styling)  █                            0.5%
 ```
 
-| Language | Percentage | Primary Responsibilities & Stack Modules |
+| Language / Tech | Share | Primary Responsibilities & Stack Modules |
 | :--- | :--- | :--- |
-| **TypeScript** | **69.9%** | React 18 SPA UI, Recharts Financial Visualizations, TanStack React Query Hooks, AuthContext, Executive Dashboards, Reconciliation Workbench, War Room UI |
-| **Python** | **29.0%** | FastAPI REST Gateway, LangChain Framework Wrappers, 3-Stage Reconciliation Engine, Enterprise Financial ML Models (Scikit-Learn), PyPDF RAG Parser, SQLAlchemy |
-| **Other** | **1.1%** | HTML5 Template Structures, Vanilla CSS Tokens & Glassmorphism Rules, Docker Compose YAML, Shell Automation Scripts |
+| 🔵 **TypeScript** | **68.2%** | React 18 SPA UI, Recharts Financial Visualizations, TanStack React Query Hooks, AuthContext, Executive Dashboards, Reconciliation Workbench, War Room UI |
+| 🟡 **Python** | **28.5%** | FastAPI REST Gateway, LangChain Framework Wrappers, 3-Stage Reconciliation Engine, Scikit-Learn Financial ML Models, Sovereign RAG Engine, SQLAlchemy |
+| 🛢️ **SQL** | **1.4%** | Production Relational Database Schemas (DDL for Users, Organizations, Transactions, SHA-256 Ledger Blocks, RAG Documents) |
+| 🐚 **Shell** | **0.8%** | POSIX Bash Build Automation, Server Deployment Scripts (`scripts/deploy.sh`) |
+| ⚙️ **YAML & Docker** | **0.6%** | GitHub Actions Multi-Job CI/CD Workflow (`.github/workflows/ci.yml`), 5-Service Docker Compose Orchestration (`docker-compose.yml`) |
+| 🎨 **HTML5 & CSS3** | **0.5%** | App Entrypoint Templates, Custom Glassmorphism Theme Tokens, Glow Animations (`index.css`) |
 
 ---
 
