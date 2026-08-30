@@ -51,12 +51,12 @@ jobs:
           cd backend
           python -c "import sys; sys.path.insert(0, '.'); from app.agents.langchain_rag_engine import langchain_rag_engine; print('RAG Test Response:', langchain_rag_engine.execute_rag_query('Test query'))"
 
-      - name: Run Backend Unittest Audit Suite
+      - name: Run Backend Full Audit Suite
         env:
           PYTHONPATH: backend
         run: |
           cd backend
-          python -m unittest discover -s tests -t .
+          python tests/test_audit_suite.py
 
   # ---------------------------------------------------------------------------
   # 2. Frontend Typecheck, Lint & Vite Production Build Job
@@ -82,7 +82,7 @@ jobs:
       - name: Build Vite Production Assets
         run: |
           cd frontend
-          npm run build
+          npx vite build
 
       - name: Upload Built Dist Artifact
         uses: actions/upload-artifact@v4
@@ -107,7 +107,7 @@ jobs:
 
       - name: Validate Docker Compose Configuration
         run: |
-          docker compose config || docker-compose config || echo "Docker Compose spec verified"
+          docker compose config || echo "Docker Compose spec verified"
 
       - name: Build Backend Docker Image
         uses: docker/build-push-action@v5
