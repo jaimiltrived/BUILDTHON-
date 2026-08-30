@@ -1,8 +1,73 @@
 version: '3.8'
 
 services:
+  # ---------------------------------------------------------------------------
+  # 1. FastAPI Backend Application
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ftm-backend
+    ports:
+      - "8001:8001"
+    environment:
+      - API_ENV=development
+      - API_PORT=8001
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=llama3
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:80,http://127.0.0.1:5173
+    depends_on:
+      redis:
+        condition: service_started
+      ollama:
+        condition: service_started
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 2. Vite + React Frontend SPA (Nginx Production Server)
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ftm-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 3. Local Sovereign Ollama AI Server (LLaMA 3 Core)
+  # ---------------------------------------------------------------------------
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ftm-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 4. Redis High-Speed Cache & LRU Store
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: ftm-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # 5. MySQL Database (Enterprise Persistent Store)
+  # ---------------------------------------------------------------------------
   mysql:
     image: mysql:8.0
+    container_name: ftm-mysql
     environment:
       MYSQL_ROOT_PASSWORD: ""
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
@@ -18,16 +83,7 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7-alpine
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-    restart: unless-stopped
-
-  # We will add backend and frontend services later after scaffolding
-
 volumes:
   mysql_data:
   redis_data:
+  ollama_data:

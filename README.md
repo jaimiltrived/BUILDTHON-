@@ -4,6 +4,7 @@
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/jaimiltrived/BUILDTHON-)
 [![TypeScript](https://img.shields.io/badge/TypeScript-69.9%25-3178C6.svg)](https://github.com/jaimiltrived/BUILDTHON-/search?l=typescript)
 [![Python](https://img.shields.io/badge/Python-29.0%25-3776AB.svg)](https://github.com/jaimiltrived/BUILDTHON-/search?l=python)
+[![Docker](https://img.shields.io/badge/Docker-Production_Ready-2496ED.svg)](https://www.docker.com/)
 [![LangChain](https://img.shields.io/badge/LangChain-Framework-121011.svg)](https://www.langchain.com/)
 [![RAG](https://img.shields.io/badge/RAG-Sovereign_Document_Memory-blueviolet.svg)](https://github.com/jaimiltrived/BUILDTHON-)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110.0-009688.svg)](https://fastapi.tiangolo.com/)
@@ -224,7 +225,32 @@ The backend exposes 14 fully documented OpenAPI Swagger endpoint groups at `http
 
 ---
 
-## ⚡ Step-by-Step Installation & Setup Guide
+## 🐳 One-Click Docker Deployment Guide
+
+The entire Financial Time Machine stack (FastAPI Backend, Vite React Frontend Nginx, Ollama AI, Redis, MySQL) can be launched instantly using Docker Compose:
+
+```bash
+# Clone the repository
+git clone https://github.com/jaimiltrived/BUILDTHON-.git
+cd BUILDTHON-
+
+# Build and start all 5 containerized services in detached mode
+docker-compose up -d --build
+```
+
+### 🐳 Service Port Mapping Matrix
+
+| Container Service | Image Base | Container Port | Host Port | Purpose |
+| :--- | :--- | :--- | :--- | :--- |
+| **`ftm-frontend`** | `nginx:1.25-alpine` | `80` | `5173` | React 18 SPA Nginx Web Application |
+| **`ftm-backend`** | `python:3.11-slim` | `8001` | `8001` | FastAPI REST API & LangChain Supervisor |
+| **`ftm-ollama`** | `ollama/ollama:latest` | `11434` | `11434` | Local Sovereign LLaMA 3 Neural Server |
+| **`ftm-redis`** | `redis:7-alpine` | `6379` | `6379` | High-Speed Response Cache Store |
+| **`ftm-mysql`** | `mysql:8.0` | `3306` | `3306` | Enterprise SQL Transaction Store |
+
+---
+
+## ⚡ Quickstart & Local Setup Guide (Manual Option)
 
 ### System Prerequisites
 - **Node.js**: `v18.0.0` or higher
