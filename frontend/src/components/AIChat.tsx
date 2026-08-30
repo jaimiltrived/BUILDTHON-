@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { apiClient } from '../lib/apiClient';
 import {
   Send, Bot, User, Sparkles, Shield, Check, Copy,
-  Upload, Trash2, FileText, Lock, CheckCircle2, AlertTriangle, Loader2
+  Upload, Trash2, FileText, Lock, Loader2
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -39,7 +39,6 @@ export default function AIChat() {
   const [documents, setDocuments] = useState<DocumentInfo[]>([]);
   const [uploadingDoc, setUploadingDoc] = useState(false);
   const [dragOver, setDragOver] = useState(false);
-  const [ragActive, setRagActive] = useState(true);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);

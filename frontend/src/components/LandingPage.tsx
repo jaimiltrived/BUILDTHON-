@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
-  Zap, Sparkles, Shield, BarChart3, Database,
-  Lock, Cpu, ArrowRight, Play, CheckCircle2, ChevronRight, Loader2,
-  FileText, Activity, ShieldCheck, RefreshCw, Key, HelpCircle
+  Sparkles, Shield, BarChart3, Database,
+  Lock, Cpu, CheckCircle2, ChevronRight, Loader2,
+  Activity, ShieldCheck, RefreshCw
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -122,7 +122,6 @@ export default function LandingPage({ onEnter }: LandingPageProps) {
 
   // Base corporate metrics
   const baselineRevenue = 8240000;
-  const baselineProfit = 2120000;
   const baselineChurn = 0.071;
 
   // Sandbox multi-strategy math calculations

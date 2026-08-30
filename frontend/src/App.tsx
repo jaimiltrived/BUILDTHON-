@@ -22,6 +22,7 @@ import { OrganizationsView, UsersView, AIInfraView, SettingsView } from './compo
 import FinancialGraph from './components/FinancialGraph';
 import DataCenter from './components/DataCenter';
 import ResearcherPage from './components/pages/ResearcherPage';
+import ReconciliationPage from './components/pages/ReconciliationPage';
 
 import './index.css';
 
@@ -77,18 +78,23 @@ function AppInner({
   const { user } = useAuth();
   const role = (user?.role || 'CFO') as UserRole;
 
-  // Handle role default routes
+  // Handle role default routes — keep in sync with getDefaultTab() in auth.ts
   useEffect(() => {
     if (role === 'AUDITOR' && activeTab === 'dashboard') {
       setActiveTab('audit');
+    } else if (role === 'SUPER_ADMIN' && activeTab === 'dashboard') {
+      setActiveTab('organizations');
+    } else if (role === 'ORG_ADMIN' && activeTab === 'dashboard') {
+      setActiveTab('users');
     }
   }, [role]);
 
   const handleRoleChange = (newRole: UserRole) => {
-    if (newRole === 'AUDITOR') {
-      setActiveTab('audit');
-    } else {
-      setActiveTab('dashboard');
+    switch (newRole) {
+      case 'SUPER_ADMIN': setActiveTab('organizations'); break;
+      case 'ORG_ADMIN':   setActiveTab('users'); break;
+      case 'AUDITOR':     setActiveTab('audit'); break;
+      default:            setActiveTab('dashboard'); break;
     }
   };
 
@@ -130,6 +136,8 @@ function AppInner({
         return <UsersView />;
       case 'ai-infra':
         return <AIInfraView />;
+      case 'reconciliation':
+        return <ReconciliationPage />;
       case 'settings':
         return <SettingsView />;
       default:

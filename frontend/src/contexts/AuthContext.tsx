@@ -9,6 +9,8 @@ import {
   getDefaultTab,
 } from '../lib/auth';
 
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
+
 export interface RegisterParams {
   email: string;
   password: string;
@@ -59,11 +61,11 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
     params.append('username', email);
     params.append('password', password);
 
-    const res = await axios.post('http://localhost:8001/api/auth/login', params, {
+    const res = await axios.post(`${API_BASE}/api/auth/login`, params, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
 
-    const { access_token, user: userData } = res.data;
+    const { access_token, refresh_token, user: userData } = res.data;
     const authUser: AuthUser = {
       id: userData.id,
       email: userData.email,
@@ -72,7 +74,7 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
       organization_id: userData.organization_id,
     };
 
-    saveAuth(access_token, authUser);
+    saveAuth(access_token, refresh_token ?? null, authUser);
     setToken(access_token);
     setUser(authUser);
 
@@ -82,21 +84,18 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
   }, [onTabChange]);
 
   const register = useCallback(async (params: RegisterParams): Promise<{ defaultTab: string }> => {
-    // 1. Call backend register endpoint
-    await axios.post('http://localhost:8001/api/auth/register', {
+    await axios.post(`${API_BASE}/api/auth/register`, {
       email: params.email,
       password: params.password,
       full_name: params.full_name || params.email.split('@')[0],
       role: params.role || 'CFO',
       organization_id: params.organization_id || null,
     });
-
-    // 2. Perform automated login with the newly created account
     return await login(params.email, params.password);
   }, [login]);
 
   const requestOtp = useCallback(async (email: string, phone?: string): Promise<OTPResponseData> => {
-    const res = await axios.post('http://localhost:8001/api/auth/register/request-otp', {
+    const res = await axios.post(`${API_BASE}/api/auth/register/request-otp`, {
       email,
       phone: phone || null,
     });
@@ -104,7 +103,7 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
   }, []);
 
   const resendOtp = useCallback(async (email: string, phone?: string): Promise<OTPResponseData> => {
-    const res = await axios.post('http://localhost:8001/api/auth/register/resend-otp', {
+    const res = await axios.post(`${API_BASE}/api/auth/register/resend-otp`, {
       email,
       phone: phone || null,
     });
@@ -112,7 +111,7 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
   }, []);
 
   const verifyOtpAndRegister = useCallback(async (params: OTPVerifyParams): Promise<{ defaultTab: string }> => {
-    const res = await axios.post('http://localhost:8001/api/auth/register/verify-otp', {
+    const res = await axios.post(`${API_BASE}/api/auth/register/verify-otp`, {
       email: params.email,
       otp: params.otp,
       password: params.password,
@@ -121,7 +120,7 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
       organization_id: params.organization_id || null,
     });
 
-    const { access_token, user: userData } = res.data;
+    const { access_token, refresh_token, user: userData } = res.data;
     const authUser: AuthUser = {
       id: userData.id,
       email: userData.email,
@@ -130,7 +129,7 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
       organization_id: userData.organization_id,
     };
 
-    saveAuth(access_token, authUser);
+    saveAuth(access_token, refresh_token ?? null, authUser);
     setToken(access_token);
     setUser(authUser);
 
@@ -157,7 +156,7 @@ export function AuthProvider({ children, onTabChange }: { children: ReactNode; o
             organization_id: 'default-org',
           };
       const currentToken = token || 'demo-token';
-      saveAuth(currentToken, updatedUser);
+      saveAuth(currentToken, null, updatedUser);
       return updatedUser;
     });
     const defaultTab = getDefaultTab(newRole);

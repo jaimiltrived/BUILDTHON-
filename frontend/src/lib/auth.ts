@@ -17,12 +17,13 @@ export interface AuthUser {
 }
 
 const AUTH_KEY = 'ftm_auth';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8001';
 
-export function saveAuth(token: string, user: AuthUser) {
-  localStorage.setItem(AUTH_KEY, JSON.stringify({ token, user }));
+export function saveAuth(token: string, refreshToken: string | null, user: AuthUser) {
+  localStorage.setItem(AUTH_KEY, JSON.stringify({ token, refreshToken, user }));
 }
 
-export function getStoredAuth(): { token: string; user: AuthUser } | null {
+export function getStoredAuth(): { token: string; refreshToken?: string; user: AuthUser } | null {
   try {
     const raw = localStorage.getItem(AUTH_KEY);
     if (!raw) return null;
@@ -38,7 +39,7 @@ export function clearAuth() {
 
 // Axios instance — auto-injects Bearer token from localStorage
 export const api = axios.create({
-  baseURL: 'http://localhost:8001',
+  baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
 });
 
@@ -85,6 +86,7 @@ export function canAccess(role: UserRole, feature: string): boolean {
     orgadmin: ['ORG_ADMIN'],
     executive: ['EXECUTIVE'],
     audit: ['SUPER_ADMIN', 'ORG_ADMIN', 'CFO', 'BUSINESS_ANALYST', 'EXECUTIVE', 'AUDITOR'],
+    reconciliation: ['SUPER_ADMIN', 'ORG_ADMIN', 'CFO', 'BUSINESS_ANALYST', 'EXECUTIVE', 'AUDITOR'],
     // Actions
     can_approve: ['CFO', 'EXECUTIVE'],
     can_simulate: ['SUPER_ADMIN', 'ORG_ADMIN', 'CFO', 'BUSINESS_ANALYST'],
@@ -93,12 +95,21 @@ export function canAccess(role: UserRole, feature: string): boolean {
   return permissions[feature]?.includes(role) ?? false;
 }
 
+/**
+ * Maps a role to the tab key that actually exists in App.tsx routing.
+ * SUPER_ADMIN and ORG_ADMIN land on the admin tab that's relevant to them.
+ */
 export function getDefaultTab(role: UserRole): string {
   switch (role) {
-    case 'SUPER_ADMIN': return 'superadmin';
-    case 'ORG_ADMIN': return 'orgadmin';
-    case 'EXECUTIVE': return 'executive';
-    case 'AUDITOR': return 'audit';
-    default: return 'simulator';
+    case 'SUPER_ADMIN':
+      return 'organizations'; // Maps to <OrganizationsView />
+    case 'ORG_ADMIN':
+      return 'users';         // Maps to <UsersView />
+    case 'EXECUTIVE':
+      return 'dashboard';
+    case 'AUDITOR':
+      return 'audit';
+    default:
+      return 'simulator';
   }
 }

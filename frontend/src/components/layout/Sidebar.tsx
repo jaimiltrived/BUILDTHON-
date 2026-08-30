@@ -18,6 +18,7 @@ import {
   Settings,
   Activity,
   Search,
+  Coins,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -87,6 +88,7 @@ export default function Sidebar({ activeTab, onTabSelect }: SidebarProps) {
             items: [
               { id: 'dashboard', label: 'Executive Dashboard', icon: LayoutDashboard },
               { id: 'warroom', label: 'Decision War Room', icon: Scale, tag: 'Sign-off' },
+              { id: 'reconciliation', label: 'Reconciliation & Cash', icon: Coins, tag: 'Track 04' },
             ],
           },
           {
@@ -104,6 +106,7 @@ export default function Sidebar({ activeTab, onTabSelect }: SidebarProps) {
             caption: 'COMPLIANCE AUDIT',
             items: [
               { id: 'audit', label: 'Audit Center', icon: Layers, tag: 'Read-Only' },
+              { id: 'reconciliation', label: 'Reconciliation Loop', icon: Coins, tag: 'Verified' },
               { id: 'ledger', label: 'Decision Ledger', icon: BookOpen, tag: 'Locked' },
               { id: 'prediction', label: 'Prediction vs Reality', icon: History, tag: 'Locked' },
             ],
@@ -117,6 +120,7 @@ export default function Sidebar({ activeTab, onTabSelect }: SidebarProps) {
             items: [
               { id: 'dashboard', label: 'Financial Overview', icon: LayoutDashboard },
               { id: 'chat', label: 'AI Controller', icon: Bot },
+              { id: 'reconciliation', label: 'Reconciliation & Cash', icon: Coins, tag: 'Track 04' },
               { id: 'researcher', label: 'Live Researcher', icon: Search, tag: 'LLM' },
               { id: 'simulator', label: 'What-If Simulator', icon: Sliders },
               { id: 'warroom', label: 'Compare Scenarios', icon: Scale },
@@ -138,6 +142,7 @@ export default function Sidebar({ activeTab, onTabSelect }: SidebarProps) {
             caption: 'DECISION CORE',
             items: [
               { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+              { id: 'reconciliation', label: 'Reconciliation & Cash', icon: Coins, tag: 'Track 04' },
               { id: 'chat', label: 'AI Controller', icon: Bot, tag: 'AI' },
               { id: 'simulator', label: 'What-If Simulator', icon: Sliders },
               { id: 'warroom', label: 'Decision War Room', icon: Scale },

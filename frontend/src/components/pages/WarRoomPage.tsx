@@ -141,19 +141,19 @@ export default function WarRoomPage({ onNavigate }: WarRoomPageProps) {
       {/* AI Supervisor Strategic Evaluation */}
       <AIInsightCard
         title="AI Supervisor Strategic Evaluation"
-        recommendation="Plan A (+5% Balanced Growth) dominates Plan B (+15%) on a risk-adjusted basis (Score 92 vs 84)."
-        summary="While Plan B displays higher headline revenue on paper (+14.8%), its steep churn penalty (-₹1.45L) in Tier-2 merchant accounts creates long-term value destruction. Plan A yields optimal customer lifetime value with high execution certainty."
-        confidence={94}
-        riskLevel="LOW"
+        recommendation={data?.ai_rationale || "Plan A (+5% Balanced Growth) dominates Plan B (+15%) on a risk-adjusted basis (Score 92 vs 84)."}
+        summary={data?.ai_rationale ? `Live Organic Evaluation: ${data.ai_rationale}` : "While Plan B displays higher headline revenue on paper (+14.8%), its steep churn penalty (-₹1.45L) in Tier-2 merchant accounts creates long-term value destruction. Plan A yields optimal customer lifetime value with high execution certainty."}
+        confidence={plans.find((p: any) => p.name === recommendedPlan)?.confidence || 94}
+        riskLevel={plans.find((p: any) => p.name === recommendedPlan)?.risk_level || "LOW"}
         why={[
           "Plan A avoids the -0.8 merchant price elasticity cliff observed above +7% hikes.",
           "Net annual operating profit improves by ₹6.2L without contractual churn.",
           "Mathematical scorecard gives Plan A 92/100 composite resilience."
         ]}
         evidence={[
-          "Nova Commerce 24-Month Baseline GMV: ₹82.4L",
-          "MSME Regional Elasticity Model: -0.5 to -0.8",
-          "Risk-Adjusted Decision Scoring Formula"
+          `Live Revenue Baseline: ₹${((data?.current_metrics?.revenue || 8240000) / 100000).toFixed(1)}L`,
+          `Active Customer Base: ${(data?.current_metrics?.customers || 48200).toLocaleString()} merchants`,
+          "Risk-Adjusted Value Formula = Profit Gain - Risk Penalty - Uncertainty Penalty + Strategic Benefit"
         ]}
         sourceAgents={[
           "Financial Observer Agent",

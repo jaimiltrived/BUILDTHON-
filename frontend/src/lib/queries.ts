@@ -211,3 +211,111 @@ export function useOrganizationsQuery() {
     queryFn: () => apiClient.get<any[]>('/api/organizations/'),
   });
 }
+
+// 11. AI Finance Controller & Reconciliation Queries (Track 04)
+export function useReconciliationBatchQuery() {
+  return useQuery({
+    queryKey: ['reconciliation-batch'],
+    queryFn: () => apiClient.get<any>('/api/reconciliation/batch'),
+    staleTime: 60000,
+  });
+}
+
+export function useReconciliationRunQuery() {
+  return useQuery({
+    queryKey: ['reconciliation-run'],
+    queryFn: () => apiClient.get<any>('/api/reconciliation/run'),
+    staleTime: 30000,
+  });
+}
+
+export function useReconciliationAIQuery() {
+  return useQuery({
+    queryKey: ['reconciliation-ai'],
+    queryFn: () => apiClient.post<any>('/api/reconciliation/analyze'),
+    staleTime: 30000,
+  });
+}
+
+export function useRunReconciliationMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (params?: { force_new_batch?: boolean }) =>
+      apiClient.post<any>(`/api/reconciliation/run?force_new_batch=${params?.force_new_batch ? 'true' : 'false'}`),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['reconciliation-run'], data);
+      queryClient.invalidateQueries({ queryKey: ['reconciliation-batch'] });
+      queryClient.invalidateQueries({ queryKey: ['reconciliation-ai'] });
+      queryClient.invalidateQueries({ queryKey: ['cash-forecast'] });
+    },
+  });
+}
+
+export function useAnalyzeReconciliationMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<any>('/api/reconciliation/analyze'),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['reconciliation-ai'], data);
+    },
+  });
+}
+
+export function useResolveExceptionMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: { exception_id: string; resolution_action: string; notes?: string }) =>
+      apiClient.post<any>('/api/reconciliation/resolve-exception', payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reconciliation-run'] });
+      queryClient.invalidateQueries({ queryKey: ['reconciliation-batch'] });
+      queryClient.invalidateQueries({ queryKey: ['reconciliation-ai'] });
+      queryClient.invalidateQueries({ queryKey: ['cash-forecast'] });
+    },
+  });
+}
+
+export function useCashForecastQuery() {
+  return useQuery({
+    queryKey: ['cash-forecast'],
+    queryFn: () => apiClient.get<any>('/api/reconciliation/cash-forecast'),
+    staleTime: 30000,
+  });
+}
+
+// 12. Enterprise Machine Learning Queries & Mutations
+export function useMLMetricsQuery() {
+  return useQuery({
+    queryKey: ['ml-metrics'],
+    queryFn: () => apiClient.get<any>('/api/ml/metrics'),
+    staleTime: 30000,
+  });
+}
+
+export function useOptimizePriceQuery() {
+  return useQuery({
+    queryKey: ['ml-optimize-price'],
+    queryFn: () => apiClient.post<any>('/api/ml/optimize-price', {}),
+    staleTime: 60000,
+  });
+}
+
+export function usePredictChurnMutation() {
+  return useMutation({
+    mutationFn: (params: { price_delta_percentage: number }) =>
+      apiClient.post<any>('/api/ml/predict-churn', params),
+  });
+}
+
+export function useRetrainMLMutation() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => apiClient.post<any>('/api/ml/retrain', {}),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['ml-metrics'] });
+      queryClient.invalidateQueries({ queryKey: ['ml-optimize-price'] });
+    },
+  });
+}
+
+

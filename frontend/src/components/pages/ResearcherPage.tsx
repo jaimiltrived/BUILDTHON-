@@ -77,32 +77,34 @@ export default function ResearcherPage() {
           clearInterval(interval);
           
           // Parse report into markdown parts
-          const reportText = data.report || '';
+          const reportText = data.content || data.report || '';
           
           let exec = '';
           let market = '';
           let causal = '';
           let roadmap = '';
 
-          // Simple parser for standard report sections
-          const sections = reportText.split('### ');
+          // Flexible parser for standard report sections (## or ###)
+          const sections = reportText.split(/(?:##|###)\s+/);
           sections.forEach((sec: string) => {
-            if (sec.startsWith('1.')) {
-              exec = sec.replace(/^1\.\s*Executive\s*Research\s*Summary\s*\n/, '').trim();
-            } else if (sec.startsWith('2.')) {
-              market = sec.replace(/^2\.\s*Market\s*Dynamics\s*&\s*Empirical\s*Benchmarks\s*\n/, '').trim();
-            } else if (sec.startsWith('3.')) {
-              causal = sec.replace(/^3\.\s*Causal\s*Impact\s*on\s*Nova\s*Commerce\s*\n/, '').trim();
-            } else if (sec.startsWith('4.')) {
-              roadmap = sec.replace(/^4\.\s*Strategic\s*Countermeasures\s*&\s*Action\s*Roadmap\s*\n/, '').trim();
+            const cleanSec = sec.trim();
+            if (/^1\./.test(cleanSec) || cleanSec.toLowerCase().includes('executive')) {
+              exec = cleanSec.replace(/^1\.\s*(Executive\s*(Research\s*)?Summary)?/i, '').trim();
+            } else if (/^2\./.test(cleanSec) || cleanSec.toLowerCase().includes('market') || cleanSec.toLowerCase().includes('competitive')) {
+              market = cleanSec.replace(/^2\.\s*(Market\s*Dynamics|Competitive)?/i, '').trim();
+            } else if (/^3\./.test(cleanSec) || cleanSec.toLowerCase().includes('causal') || cleanSec.toLowerCase().includes('settlement') || cleanSec.toLowerCase().includes('strategic action')) {
+              causal = cleanSec.replace(/^3\.\s*(Causal\s*Impact|Strategic\s*Action)?/i, '').trim();
+            } else if (/^4\./.test(cleanSec) || cleanSec.toLowerCase().includes('roadmap') || cleanSec.toLowerCase().includes('countermeasures')) {
+              roadmap = cleanSec.replace(/^4\.\s*(Strategic\s*Countermeasures|Action\s*Roadmap)?/i, '').trim();
             }
           });
 
           // Fallback parsing if formatting deviates
-          if (!exec && !market) {
+          if (!exec && !market && !causal) {
             exec = reportText;
           }
 
+          const rawConfidence = typeof data.confidence === 'number' ? data.confidence : 0.94;
           const newReport: ResearchReport = {
             id: `rep-${Date.now()}`,
             topic: targetTopic,
@@ -111,11 +113,11 @@ export default function ResearcherPage() {
             marketDynamics: market,
             causalImpact: causal,
             strategicRoadmap: roadmap,
-            confidence: Math.round((data.confidence || 0.9) * 100),
+            confidence: rawConfidence > 1 ? Math.round(rawConfidence) : Math.round(rawConfidence * 100),
             riskRating: data.risk_rating || 'LOW',
-            durationMs: data.total_duration_ms || 2450,
-            isLiveLlm: data.is_live_llm ?? true,
-            sourceAgents: data.source_agents || ['Market Intelligence Observer'],
+            durationMs: data.total_duration_ms || data.duration_ms || 1850,
+            isLiveLlm: data.is_live_llm ?? data.engine_status?.is_llm ?? true,
+            sourceAgents: data.source_agents || ['Market Intelligence Observer', 'Causal Impact Agent'],
             pipelineSteps: data.pipeline_steps || []
           };
 
