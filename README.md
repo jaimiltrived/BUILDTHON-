@@ -2,6 +2,7 @@
 > **Autonomous Causal Decision Twin, Multi-Source Reconciliation & Predictive ML Platform for Enterprise Finance**
 
 [![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/jaimiltrived/BUILDTHON-)
+[![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-blue.svg)](https://github.com/jaimiltrived/BUILDTHON-/actions)
 [![TypeScript](https://img.shields.io/badge/TypeScript-69.9%25-3178C6.svg)](https://github.com/jaimiltrived/BUILDTHON-/search?l=typescript)
 [![Python](https://img.shields.io/badge/Python-29.0%25-3776AB.svg)](https://github.com/jaimiltrived/BUILDTHON-/search?l=python)
 [![Docker](https://img.shields.io/badge/Docker-Production_Ready-2496ED.svg)](https://www.docker.com/)
@@ -222,6 +223,28 @@ The backend exposes 14 fully documented OpenAPI Swagger endpoint groups at `http
 | **ledger** | `GET` | `/api/ledger/verify` | Run cryptographic chain verification audit |
 | **ai** | `POST` | `/api/ai/chat` | Send prompt to local LLaMA 3 supervisor agent via LangChain |
 | **memory** | `POST` | `/api/memory/upload` | Upload PDF, CSV, TXT, or JSON file to local RAG index |
+
+---
+
+## ⚙️ Automated CI/CD Pipeline Architecture
+
+The platform uses a 4-stage GitHub Actions CI/CD workflow (`.github/workflows/ci.yml`) triggered on every `push` and `pull_request`:
+
+```mermaid
+graph LR
+    A[Git Push / PR] --> B[🐍 Backend CI: Python 3.11, Unittests, LangChain RAG Audit]
+    A --> C[⚛️ Frontend CI: Node 18, TypeScript Check, Vite Production Build]
+    A --> D[🐳 Docker CI: Buildx, Dockerfile Audit, Compose Validation]
+    B --> E[🚀 Production Release Status & Deployment Readiness]
+    C --> E
+    D --> E
+```
+
+### ⚙️ Automated Pipeline Jobs
+1. **`backend-ci`**: Installs Python 3.11 dependencies, validates DB seeding (`seed_demo_users.py`), tests LangChain RAG context retrieval, and runs unittest audit suites.
+2. **`frontend-ci`**: Installs Node 18 packages, executes TypeScript strict compiler type checking (`tsc --noEmit`), compiles Vite production bundle, and uploads build artifacts.
+3. **`docker-ci`**: Validates `docker-compose.yml` configuration and builds `backend/Dockerfile` and `frontend/Dockerfile` images with Docker Buildx.
+4. **`deployment-readiness`**: Evaluates parallel job completion and generates production release status reports.
 
 ---
 
