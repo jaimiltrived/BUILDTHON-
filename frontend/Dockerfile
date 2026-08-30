@@ -1,13 +1,13 @@
 # ---------------------------------------------------------------------------
 # Stage 1: Build Frontend Assets
 # ---------------------------------------------------------------------------
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 
 WORKDIR /app
 
 # Copy package manifests and install dependencies
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm install --legacy-peer-deps
 
 # Copy application source code and build for production
 COPY . .
