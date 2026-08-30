@@ -85,17 +85,41 @@ async def chat_with_ai(
     return await supervisor.handle_chat(req.message, db=db, org_id=org_id)
 
 
-@router.post("/research")
-async def conduct_research(
-    req: AIResearchRequest,
-    db: Session = Depends(deps.get_db),
+from app.agents.langchain_rag_engine import langchain_rag_engine
+
+
+class LangChainRAGRequest(BaseModel):
+    query: str
+    context_override: Optional[str] = None
+
+
+class RAGIngestRequest(BaseModel):
+    doc_id: str
+    title: str
+    text: str
+
+
+@router.post("/langchain-rag-query")
+async def langchain_rag_query(
+    req: LangChainRAGRequest,
     current_user: User = Depends(deps.get_current_active_user),
 ):
-    """Conducts deep autonomous market & financial research using live LLaMA 3."""
-    org_id, _ = resolve_org(current_user, db)
-    return await supervisor.conduct_research(
-        req.topic,
-        req.focus_area or "Market & Financial Intelligence",
-        db=db,
-        org_id=org_id,
-    )
+    """Executes a grounded RAG query using LangChain framework wrappers and local LLaMA 3."""
+    return langchain_rag_engine.execute_rag_query(req.query, context_override=req.context_override)
+
+
+@router.post("/langchain-rag-ingest")
+async def langchain_rag_ingest(
+    req: RAGIngestRequest,
+    current_user: User = Depends(deps.get_current_active_user),
+):
+    """Ingests and chunks enterprise document into local LangChain RAG vector index."""
+    chunks_count = langchain_rag_engine.ingest_document(req.doc_id, req.title, req.text)
+    return {
+        "status": "INGESTED",
+        "doc_id": req.doc_id,
+        "title": req.title,
+        "chunks_indexed": chunks_count,
+        "engine": "LangChain RecursiveCharacterTextSplitter"
+    }
+
